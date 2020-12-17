@@ -1,4 +1,4 @@
--- script that prepares a MySQL server.... --
+-- script that prepares a MySQL server... --
 -- Create DATABASE 'hbnb_dev_db' --
 CREATE DATABASE IF NOT EXISTS hbnb_dev_db;
 
