@@ -35,14 +35,21 @@ class DBStorage:
             Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
-        dictionary = {}
-        for c in classes:
-            if cls is None or cls is classes[c] or cls is c:
-                objs = self.__session.query(classes[c]).all()
-                for obj in objs:
-                    key = obj.__class__.__name__ + '.' + obj.id
-                    dictionary[key] = obj
-        return (dictionary)
+        """ this is a documentation """
+        dicc = {}
+        if cls:
+            query = self.__session.query(eval(cls))
+            for clase in query:
+                key = "{}.{}".format(type(clase)._name_, clase.id)
+                dicc[key] = clase
+        else:
+            lista_clases = [User, State, City, Amenity, Place, Review]
+            for clase in lista_clases:
+                query = self.__session.query(clase)
+                for obj in query:
+                    key = "{}.{}".format(type(obj)._name_, obj.id)
+                    dicc[key] = obj
+        return dicc
 
     def new(self, obj):
         self.__session.add(obj)

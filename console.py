@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """ Console Module """
 import cmd
+import models
 import sys
 from models.base_model import BaseModel
 from models.__init__ import storage
@@ -134,7 +135,7 @@ class HBNBCommand(cmd.Cmd):
 
         for key, value in dict_args.items():
             setattr(new_instance, key, value)
-        storage.save() 
+        storage.save()
         print(new_instance.id)
         storage.save()
 
@@ -222,9 +223,8 @@ class HBNBCommand(cmd.Cmd):
 
             o = storage.all(eval(args_2[0]))
             print([o[k].__str__() for k in o])
-
         except NameError:
-            print("** class doesn't exist **")
+            print("** class doesn't exist")
 
     def help_all(self):
         """ Help information for the all command """
