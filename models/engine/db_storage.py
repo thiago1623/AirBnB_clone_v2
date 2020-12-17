@@ -1,3 +1,8 @@
+"""
+this is a documentation
+"""
+
+
 from os import getenv
 from models.base_model import Base
 from sqlalchemy import create_engine
@@ -15,12 +20,12 @@ classes = {"City": City, "State": State, "User": User,
 
 
 class DBStorage:
+    """ this is a documentation """
     __engine = None
     __session = None
 
     def __init__(self):
-        """ init """
-
+        """ this is a documentation """
         user = getenv('HBNB_MYSQL_USER')
         password = getenv('HBNB_MYSQL_PWD')
         host = getenv('HBNB_MYSQL_HOST')
@@ -52,16 +57,20 @@ class DBStorage:
         return dicc
 
     def new(self, obj):
+        """ this is a documentation """
         self.__session.add(obj)
 
     def save(self):
+        """ this is a documentation """
         self.__session.commit()
 
     def delete(self, obj=None):
+        """ this is a documentation """
         if obj is not None:
             self.__session.delete(obj)
 
     def reload(self):
+        """ this is a documentation """
         Base.metadata.create_all(self.__engine)
         Session = sessionmaker(bind=self.__engine, expire_on_commit=False)
         session = scoped_session(Session)
