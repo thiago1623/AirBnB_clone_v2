@@ -43,9 +43,9 @@ class DBStorage:
         """ this is a documentation """
         dicc = {}
         if cls:
-            query = self.__session.query(eval(cls))
+            query = self.__session.query(cls) ## eval en el quiery
             for clase in query:
-                key = "{}.{}".format(type(clase)._name_, clase.id)
+                key = "{}.{}".format(type(clase).__name__, clase.id)
                 dicc[key] = clase
         else:
             lista_clases = [User, State, City, Amenity, Place, Review]
