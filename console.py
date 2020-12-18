@@ -3,6 +3,7 @@
 import cmd
 import models
 import sys
+from os import getenv
 from models.base_model import BaseModel
 from models.__init__ import storage
 from models.user import User
@@ -125,16 +126,28 @@ class HBNBCommand(cmd.Cmd):
             return
 
         dict_args = {}
+        keyw = []
+        value = []
+        #print("--->>>>", list_args)
         for arg in list_args:
             tmp_arg = arg.split('=')
             if len(tmp_arg) == 2:
                 tmp_arg[1] = tmp_arg[1].replace('_', ' ')
                 tmp_arg[1] = tmp_arg[1].replace('"', '')
-                dict_args[tmp_arg[0]] = tmp_arg[1]
+                keyw.append(tmp_arg[0])
+                value.append(tmp_arg[1])
+                dict_args = dict(zip(keyw, value))
+
+                #dict_args[tmp_arg[0]] = tmp_arg[1]
+        #print("--->", dict_args)
+
         new_instance = HBNBCommand.classes[list_args[0]]()
 
         for key, value in dict_args.items():
             setattr(new_instance, key, value)
+        #print(new_instance)
+        if getenv("HBNB_TYPE_STORAGE") != "db": ########
+            storage.new(new_instance)
         storage.save()
         print(new_instance.id)
         storage.save()
