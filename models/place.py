@@ -1,10 +1,20 @@
 #!/usr/bin/python3
 """ Place Module for HBNB project """
 from models.base_model import BaseModel, Base
-from sqlalchemy import Column, Integer, Float, String, ForeignKey
+from sqlalchemy import Column, Integer, Float, String, ForeignKey, Table
 from models.review import Review
+from models.amenity import Amenity
 from sqlalchemy.orm import relationship, backref
 from os import getenv
+
+
+association_table = Table("place_amenity", Base.metadata,
+                          Column("place_id", String(60),
+                                 ForeignKey("places.id"),
+                                 primary_key=True, nullable=False),
+                          Column("amenity_id", String(60),
+                                 ForeignKey("amenities.id"),
+                                 primary_key=True, nullable=False))
 
 
 class Place(BaseModel, Base):
@@ -21,10 +31,12 @@ class Place(BaseModel, Base):
     latitude = Column(Float)
     longitude = Column(Float)
 
-    #
     reviews = relationship("Review", backref="place",
                            cascade="delete")
-# all, delete, delete-orphan")
+
+    amenities = relationship("Amenity", secondary="place_amenity",
+                                    viewonly=False)
+    amenity_ids = []
 
     if getenv("HBNB_TYPE_STORAGE") != "db":
         @property
@@ -38,3 +50,24 @@ class Place(BaseModel, Base):
                 if city.state_id == self.id:
                     list_city.append(city)
             return list_city
+
+        @property
+        def amenities(self):
+            """
+            returns the list of City instances with state_id equals
+            to the current State.id
+            """
+            list_city = []
+            for city in models.storage.all(Amenity).values():
+                if city.state_id == self.id:
+                    list_city.append(city)
+            return list_city
+
+        @amenities.setter
+        def amenities(self, value):
+            """
+            returns the list of City instances with state_id equals
+            to the current State.id
+            """
+            if type(value) == Amenity:
+                self.amenity_ids.append(value.id)
