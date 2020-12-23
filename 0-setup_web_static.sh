@@ -13,12 +13,12 @@ sudo mkdir -p /data/web_static/shared/
 sudo mkdir -p /data/web_static/shared/test
 
 # Create a fake HTML file
-echo "Holberton School" >> /data/web_static/releases/test/index.html
+echo "Holberton School" > /data/web_static/releases/test/index.html
 
-# Create a symbolic link
+#simbolic link
 sudo ln -sf /data/web_static/releases/test/ /data/web_static/current
 
-# Give ownership of the /data/
+#ownership and group
 sudo chown -R ubuntu:ubuntu /data
 
 #routing to web static
