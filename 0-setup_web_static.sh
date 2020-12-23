@@ -6,11 +6,11 @@ sudo apt-get update
 sudo apt-get -y install nginx
 
 #create folders
-sudo mkdir -p /data
-sudo mkdir -p /data/web_static
-sudo mkdir -p /data/web_static/releases/
-sudo mkdir -p /data/web_static/shared/
-sudo mkdir -p /data/web_static/shared/test
+sudo mkdir /data/
+sudo mkdir /data/web_static/
+sudo mkdir /data/web_static/releases/
+sudo mkdir /data/web_static/shared/
+sudo mkdir /data/web_static/releases/test/
 
 # Create a fake HTML file
 echo "<!DOCTYPE html>
@@ -20,7 +20,7 @@ echo "<!DOCTYPE html>
   <body>
     Holberton School
   </body>
-</html>" > /data/web_static/releases/test/index.html
+</html>" | sudo tee /data/web_static/releases/test/index.html
 
 #simbolic link
 sudo ln -sf /data/web_static/releases/test/ /data/web_static/current
