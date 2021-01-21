@@ -1,39 +1,28 @@
 #!/usr/bin/python3
 """
-script that starts a Flask web application:
+starts a Flask web application
 """
-from models import storage
+
 from flask import Flask, render_template
+from models import *
+from models import storage
 app = Flask(__name__)
 
 
-@app.route('/states')
-def states():
-    """Displays an HTML page with a list of all States.
-    States are sorted by name.
-    """
+@app.route('/states', strict_slashes=False)
+@app.route('/states/<state_id>', strict_slashes=False)
+def states(state_id=None):
+    """display the states and cities listed in alphabetical order"""
     states = storage.all("State")
-    return render_template('9-states.html', states=states)
-
-
-@app.route('/states/<id>')
-def states_given_id(id):
-    """Displays an HTML page with info about <id>, if it exists."""
-    states = storage.all("State")
-    found_state = ""
-    for s_id in states:
-        if s_id == id:
-            found_state = states[s_id]
-
-    return render_template('9-states.html',
-                           state=found_state)
+    if state_id is not None:
+        state_id = 'State.' + state_id
+    return render_template('9-states.html', states=states, state_id=state_id)
 
 
 @app.teardown_appcontext
-def teardown(err):
-    """Displays an HTML page with info about <id>, if it exists."""
+def teardown_db(exception):
+    """closes the storage on teardown"""
     storage.close()
 
-
-if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=5000)
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port='5000')
